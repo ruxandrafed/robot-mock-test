@@ -1,3 +1,4 @@
+require_relative 'spec_helper'
 # Robots can only attack enemy robots that are in the tile/block next to them
 # So if an enemy robot is directly above, below, or next to the robot, then it will wound the enemy robot
 # Otherwise the attack method should not do anything
@@ -58,4 +59,55 @@ describe Robot do
       end
     end
   end
+
+    context "with enemy robot directly to the right" do
+      before(:each) do
+        @robot2 = Robot.new
+        @robot2.move_right
+      end
+
+      it "is able to successfully wound the enemy" do
+        expect(@robot2).to receive(:wound)
+        @robot.attack(@robot2)
+      end
+    end
+
+    context "with enemy robot two blocks to the right" do
+      before(:each) do
+        @robot2 = Robot.new
+        @robot2.move_right
+        @robot2.move_right # a second time
+      end
+
+      it "is unable to successfully wound the enemy" do
+        expect(@robot2).not_to receive(:wound)
+        @robot.attack(@robot2)
+      end
+    end
+
+    context "with enemy robot one block to the left" do
+      before(:each) do
+        @robot2 = Robot.new
+        @robot2.move_left
+      end
+
+      it "is able to successfully wound the enemy" do
+        expect(@robot2).to receive(:wound)
+        @robot.attack(@robot2)
+      end
+    end
+
+    context "with enemy robot two blocks to the left" do
+      before(:each) do
+        @robot2 = Robot.new
+        @robot2.move_left
+        @robot2.move_left
+      end
+
+      it "is unable to successfully wound the enemy" do
+        expect(@robot2).not_to receive(:wound)
+        @robot.attack(@robot2)
+      end
+    end
+
 end

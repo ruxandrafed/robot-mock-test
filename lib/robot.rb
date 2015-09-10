@@ -1,5 +1,6 @@
 require_relative 'item'
 require_relative 'weapon'
+require_relative 'box_of_bolts'
 require_relative 'exceptions'
 
 class Robot
@@ -31,8 +32,13 @@ class Robot
   end
 
   def pick_up(item)
-    @equipped_weapon = item if item.is_a? Weapon
-    items_weight + item.weight > 250 ? nil : items << item
+    if items_weight + item.weight > 250
+      nil
+    else
+        @equipped_weapon = item if item.is_a? Weapon
+        item.feed(self) if (item.is_a? BoxOfBolts) && health <= 80
+        items << item
+    end
   end
 
   def items_weight
@@ -52,9 +58,36 @@ class Robot
     (@health + health_points) <= 100 ? @health += health_points : @health = 100
   end
 
+  def y_distance_from(unit)
+    (self.position[1] - unit.position[1]).abs
+  end
+
+  def x_distance_from(unit)
+    (self.position[0] - unit.position[0]).abs
+  end
+
+  def max_distance(unit)
+    [x_distance_from(unit), y_distance_from(unit)].max
+  end
+
+  def hit_with_grenade(unit)
+    @equipped_weapon.hit(unit)
+    @equipped_weapon = nil
+  end
+
+  def has_grenade?
+    @equipped_weapon.is_a? Grenade
+  end
+
   def attack(another_robot)
-    another_robot.wound(5)
-    @equipped_weapon.hit(another_robot) if @equipped_weapon
+    if max_distance(another_robot) > 2
+      nil
+    elsif max_distance(another_robot) > 1
+      has_grenade? ? hit_with_grenade(another_robot) : nil
+    else
+      another_robot.wound(5)
+      @equipped_weapon.hit(another_robot) if @equipped_weapon
+    end
   end
 
   def attack!(another_robot)

@@ -1,3 +1,4 @@
+require_relative 'robot'
 require_relative 'item'
 
 class BoxOfBolts < Item
