@@ -109,6 +109,11 @@ class Robot
     all_enemies
   end
 
+  def hit_with_special_weapon
+    scan_enemies.each { |enemy| @equipped_weapon.hit(enemy) }
+    @equipped_weapon = nil
+  end
+
   private
     def y_distance_from(unit)
       (self.position[1] - unit.position[1]).abs
@@ -126,12 +131,6 @@ class Robot
       @equipped_weapon.hit(unit)
       @equipped_weapon = nil
     end
-
-    def hit_with_special_weapon
-      scan_enemies.each { |enemy| @equipped_weapon.hit(enemy) }
-      @equipped_weapon = nil
-    end
-
 
     def has_grenade?
       @equipped_weapon.is_a? Grenade
