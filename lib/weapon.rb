@@ -1,5 +1,3 @@
-require_relative 'item'
-
 class Weapon < Item
 
   attr_reader :damage
@@ -9,8 +7,8 @@ class Weapon < Item
     @damage = damage
   end
 
-  def hit(robot)
-    robot.wound(@damage)
+  def hit(victim)
+    victim.wound(@damage)
   end
 
 end

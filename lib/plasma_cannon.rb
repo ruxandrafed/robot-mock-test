@@ -1,9 +1,10 @@
 class PlasmaCannon < Weapon
 
   def initialize
-    @name = 'Plasma Cannon'
-    @weight = 200
-    @damage = 55
+    super('Plasma Cannon', 200, 55)
+    # @name = 'Plasma Cannon'
+    # @weight = 200
+    # @damage = 55
   end
 
 end

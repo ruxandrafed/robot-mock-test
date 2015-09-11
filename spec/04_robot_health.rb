@@ -13,7 +13,7 @@ describe Robot do
 
   describe "#wound" do
     it "decreases health" do
-      @robot.wound(20)
+      @robot.wound(70)
       expect(@robot.health).to eq(80)
     end
 
@@ -25,7 +25,7 @@ describe Robot do
 
   describe "#heal" do
     it "increases health" do
-      @robot.wound(40)
+      @robot.wound(90)
       @robot.heal(20)
       expect(@robot.health).to eq(80)
     end
@@ -38,7 +38,7 @@ describe Robot do
 
   describe "#heal!" do
     it "raises exception if health is <= 0" do
-      @robot.wound(100)
+      @robot.wound(150)
       expect{ @robot.heal!(20) }.to raise_error(RobotIsDead)
     end
   end
